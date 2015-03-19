@@ -81,7 +81,7 @@ $cap = create_captcha($vals);*/
   <div class="form-group">
     <label for="captchaInput" class="col-sm-2 control-label">Captcha</label>
     <div class="col-sm-10">
-      <div><?php echo $captcha["image"];?></div>
+      <div><?php echo str_replace("<img", "<img id='captcha' ",$captcha["image"]); ?></div>
       <input type="text" class="form-control" id="captchaText">
     </div>
   </div>
@@ -101,8 +101,8 @@ $cap = create_captcha($vals);*/
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
 
 </html>
