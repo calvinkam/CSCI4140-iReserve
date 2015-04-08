@@ -16,12 +16,14 @@
 	}
 	mkdir($CAPTCHA_DIR,0711);
 	// Generate the words on the captcha
-	$pool="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	$word=substr(str_shuffle($pool),0,6);
+	$pool = array("epG43w","9DU58P","WGwLVC","KJy5Tb");
+	$word = array_rand($pool,1);
+	//$pool="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	//$word=substr(str_shuffle($pool),0,6);
 
 // Generate captcha
 $config = array(
-	'word' => $word,
+	'word' => $pool[$word],
 	'img_path' => $CAPTCHA_DIR,
 	'img_url' => $CAPTCHA_DIR,
 	'img_width' => 250,
@@ -29,18 +31,13 @@ $config = array(
 	'font_path' => './AHGBold.ttf'
 );
 $captcha = create_captcha( $config );
-
-/*	$vals = array(
-    'word'	=> 'Random word',
-    'img_path'	=> $CAPTCHA_DIR,
-    'img_url'	=> $CAPTCHA_DIR,
-    'font_path'	=> './AHGBold.ttg',
-    'img_width'	=> 150,
-    'img_height' => 30,
-    'expiration' => 7200
-    );
-
-$cap = create_captcha($vals);*/
+ 
+$verified = false;
+// Check Submit
+if(isset($_REQUEST["email"]) && strcmp($_REQUEST["email"],"csci4140@cse.cuhk.edu.hk") == 0 && strcmp($_REQUEST["password"],"opensource") == 0 && strcmp($_REQUEST["captchaText"], $_REQUEST["captcha_ans"]) == 0)
+{
+	$verified = true;
+}
 
 ?>
 <!DOCTYPE html>
@@ -62,19 +59,28 @@ $cap = create_captcha($vals);*/
 	 	</div>
 	 </div>
 	 <div class="container" style="padding-top:30px;">
+<?php if(isset($_REQUEST["email"]) && !$verified):?>
+	 	<div class="row">
+	 		<div class="alert alert-danger" role="alert">Wrong Combination Or Wrong Captcha!</div>
+	 	</div>
+<?php elseif(isset($_REQUEST["email"]) && $verified): ?>
+	<div class="row">
+	 		<div class="alert alert-success" role="alert">Login Success!</div>
+	 	</div>
+<?php endif; ?>
 		<div class="row">
 			<div class="col-sm-6">
-				<form class="form-horizontal">
+<form class="form-horizontal" method="POST">
   <div class="form-group">
     <label for="email" class="col-sm-2 control-label">Email</label>
     <div class="col-sm-10">
-      <input type="email" class="form-control" id="email" placeholder="Email">
+      <input type="email" class="form-control" name="email" id="email" placeholder="Email">
     </div>
   </div>
   <div class="form-group">
     <label for="password" class="col-sm-2 control-label">Password</label>
     <div class="col-sm-10">
-      <input type="password" class="form-control" id="password" placeholder="Password">
+      <input type="password" class="form-control" name="password" id="password" placeholder="Password">
     </div>
   </div>
   
@@ -82,10 +88,11 @@ $cap = create_captcha($vals);*/
     <label for="captchaInput" class="col-sm-2 control-label">Captcha</label>
     <div class="col-sm-10">
       <div><?php echo str_replace("<img", "<img id='captcha' ",$captcha["image"]); ?></div>
-      <input type="text" class="form-control" id="captchaText">
+      <input type="text" class="form-control" name="captchaText" id="captchaText">
     </div>
   </div>
   <div class="form-group">
+  	<input type="hidden" name="captcha_ans" value="<?php echo $captcha['word'];?>">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-primary btn-lg">Continue</button>
     </div>
