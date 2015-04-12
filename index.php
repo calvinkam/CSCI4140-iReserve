@@ -70,7 +70,7 @@ if(isset($_REQUEST["email"]) && strcmp($_REQUEST["email"],"csci4140@cse.cuhk.edu
 <?php endif; ?>
 		<div class="row">
 			<div class="col-sm-6">
-<form class="form-horizontal" method="POST">
+<form class="form-horizontal" method="POST" id="reserveForm">
   <div class="form-group">
     <label for="email" class="col-sm-2 control-label">Email</label>
     <div class="col-sm-10">
